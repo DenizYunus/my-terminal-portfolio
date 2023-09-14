@@ -30,6 +30,7 @@ const Terminal = () => {
   const [text, setText] = useState(USER_TEXT_INDICATOR);
   const terminalTextarea = useRef(null);
   const { getResponse } = ResponseHelper();
+  const [userWritable, setUserWritable] = useState(true);
 
   // const clearChat = () => {
   //   setText(userTextIndicator);
@@ -58,7 +59,8 @@ const Terminal = () => {
     }
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress = async (e) => {
+    if (!userWritable) return;
     terminalTextarea.current.scrollTop = terminalTextarea.current.scrollHeight;
     if (e.key === "Enter") {
       e.preventDefault();
@@ -68,11 +70,13 @@ const Terminal = () => {
         const lastLine = lines[lines.length - 1];
         const userText = lastLine.split(USER_TEXT_INDICATOR)[1];
 
-        const systemResponse = getResponse(userText);
+        setUserWritable(false);
+        const systemResponse = await getResponse(userText);
         console.log("User Entered:", userText);
 
         addToText(`${systemResponse}`);
         addToText(USER_TEXT_INDICATOR);
+        setUserWritable(true);
       }
     }
   };
@@ -91,3 +95,5 @@ const Terminal = () => {
 };
 
 export default Terminal;
+
+// sudo rm mlwr3162

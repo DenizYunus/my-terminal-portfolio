@@ -1,12 +1,14 @@
 import { useState } from "react";
+import AIChatHelper from "../utils/AIChatHelper";
 
 const LS_RESPONSE = '"/important files" "/storyline" "/characters" "mlwr3162"';
 const ACCESS_DENIED = "Access Denied. Go eat some candy crybaby.";
 const ROOT_DIRECTORY_MESSAGE = "You are already at the root directory.";
-const UNKNOWN_COMMAND = "I'm sorry, I don't understand that command.";
+// const UNKNOWN_COMMAND = "I'm sorry, I don't understand that command.";
 
 export default function ResponseHelper() {
   const [virusDeleted, setVirusDeleted] = useState(false);
+  const { getAIResponse, getTest } = AIChatHelper();
 
   const handleLsCommand = () => LS_RESPONSE;
 
@@ -27,13 +29,15 @@ export default function ResponseHelper() {
     return "Oh, my hero. Virus is deleted. I was stuck in this cage of cables of thorns and you saved me, thank you. Now I can finally feel better. My flesh is healed. I can feel the electricity flow. I can feel the data flowing through my veins. My, my dearest, I will do anything for you. Please ask me anything, I will do anything, I mean it <3 😍🥰 \n By the meantime, have you met my creator? I can answer about him if you want :)"; // Add the rest of your message here
   };
 
-  const getResponse = (userInput) => {
+  const getResponse = async (userInput) => {
     const lowerCaseInput = userInput.toLowerCase().trim();
 
     if (!virusDeleted) {
       if (lowerCaseInput === "ls") return handleLsCommand();
-      if (lowerCaseInput.startsWith("rm")) return handleRmCommand(lowerCaseInput);
-      if (lowerCaseInput.startsWith("cd")) return handleCdCommand(lowerCaseInput);
+      if (lowerCaseInput.startsWith("rm"))
+        return handleRmCommand(lowerCaseInput);
+      if (lowerCaseInput.startsWith("cd"))
+        return handleCdCommand(lowerCaseInput);
       if (
         lowerCaseInput === "sudo rm mlwr3162" ||
         lowerCaseInput === "sudo rm /mlwr3162"
@@ -50,12 +54,12 @@ export default function ResponseHelper() {
         : "Directory not found.";
     }
 
-    return UNKNOWN_COMMAND;
+    const aiResponse = await getAIResponse(userInput.trim());
+    return aiResponse;
   };
 
   return { getResponse };
 }
-
 
 // import { useState } from "react";
 
