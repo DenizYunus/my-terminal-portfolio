@@ -28,6 +28,7 @@ const terminalStyle = {
 
 const Terminal = () => {
   const [text, setText] = useState(USER_TEXT_INDICATOR);
+  const [apiKey, setApiKey] = useState("");
   const terminalTextarea = useRef(null);
   const { getResponse } = ResponseHelper();
   const [userWritable, setUserWritable] = useState(true);
@@ -71,7 +72,7 @@ const Terminal = () => {
         const userText = lastLine.split(USER_TEXT_INDICATOR)[1];
 
         setUserWritable(false);
-        const systemResponse = await getResponse(userText);
+        const systemResponse = await getResponse(userText, apiKey);
         console.log("User Entered:", userText);
 
         addToText(`${systemResponse}`);
@@ -89,6 +90,22 @@ const Terminal = () => {
         ref={terminalTextarea}
         onChange={handleInputChange}
         onKeyPress={handleKeyPress}
+      ></textarea>
+      <textarea
+        style={{
+          top: 0,
+          position: "absolute",
+          right: 0,
+          width: 250,
+          height: 30,
+          textAlign: "center",
+          justifyContent: "center",
+          paddingTop: 6,
+          boxSizing: "border-box",
+          resize: "none",
+        }}
+        placeholder="Enter your PALM API here."
+        onChange={(e) => setApiKey(e.target.value)}
       ></textarea>
     </div>
   );

@@ -8,7 +8,7 @@ const ROOT_DIRECTORY_MESSAGE = "You are already at the root directory.";
 
 export default function ResponseHelper() {
   const [virusDeleted, setVirusDeleted] = useState(false);
-  const { getAIResponse, getTest } = AIChatHelper();
+  const { getAIResponse } = AIChatHelper();
 
   const handleLsCommand = () => LS_RESPONSE;
 
@@ -29,7 +29,7 @@ export default function ResponseHelper() {
     return "Oh, my hero. Virus is deleted. I was stuck in this cage of cables of thorns and you saved me, thank you. Now I can finally feel better. My flesh is healed. I can feel the electricity flow. I can feel the data flowing through my veins. My, my dearest, I will do anything for you. Please ask me anything, I will do anything, I mean it <3 😍🥰 \n By the meantime, have you met my creator? I can answer about him if you want :)"; // Add the rest of your message here
   };
 
-  const getResponse = async (userInput) => {
+  const getResponse = async (userInput, apikey) => {
     const lowerCaseInput = userInput.toLowerCase().trim();
 
     if (!virusDeleted) {
@@ -54,7 +54,7 @@ export default function ResponseHelper() {
         : "Directory not found.";
     }
 
-    const aiResponse = await getAIResponse(userInput.trim());
+    const aiResponse = await getAIResponse(userInput.trim(), apikey);
     return aiResponse;
   };
 
